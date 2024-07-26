@@ -2,11 +2,15 @@ package com.spring.security.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.util.Date;
+import java.util.Map;
 import java.util.function.Function;
 
 @Service
@@ -63,5 +67,24 @@ public class JwtService {
         // for HMAC (Hash-based Message Authentication Code) operations with the SHA algorithm.
         // This key is used for signing and verifying the JWT's integrity and authenticity.
     }
+
+
+    public String generateToken(Map<String,Object> extraClaims, UserDetails userDetails){
+        return Jwts
+                .builder()
+                .setClaims(extraClaims) //Sets the claims to be included in the token. extraClaims is a map of additional data you want to include in the token, such as roles or custom data.
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() +1000 * 60 *24))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact(); //Finalizes the token creation and returns the compact, URL-safe string representation of the JWT
+    }
+
+
+
+
+
+
+
 
 }
