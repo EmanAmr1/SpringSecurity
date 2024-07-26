@@ -15,8 +15,11 @@ public class JwtService {
 
     private static final String SECRET_KEY= "62df867f198c075a4d5381e8e7ea044acbe047b46d30e875f02562b594f05867";
 
+    //The :: syntax in Java is known as the method reference operator.
+    // It is used to refer to methods or constructors without actually invoking them.
+   // claims -> claims.getSubject()
     public String extractUsername(String token){
-        return null;
+        return extractClaim(token,Claims::getSubject); //extract username
     }
 
 
