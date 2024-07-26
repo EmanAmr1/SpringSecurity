@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -78,6 +79,12 @@ public class JwtService {
                 .setExpiration(new Date(System.currentTimeMillis() +1000 * 60 *24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact(); //Finalizes the token creation and returns the compact, URL-safe string representation of the JWT
+    }
+
+    // without extraClaims
+    // generate a token when no additional claims are needed.
+    public String generateToken(UserDetails userDetails){
+        return generateToken(new HashMap<>() ,userDetails);
     }
 
 
