@@ -7,6 +7,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.util.function.Function;
 
 @Service
 public class JwtService {
@@ -17,6 +18,18 @@ public class JwtService {
     public String extractUsername(String token){
         return null;
     }
+
+
+
+    private <T> T extractClaim(String token , Function<Claims ,T> claimsResolver){  // Function<Claims ,T> which takes a Claims object and returns an object of type T. This function is used to extract a specific claim from the Claims object.
+        final Claims claims = extractAllClaims(token); //get all claims
+        return claimsResolver.apply(claims); //extract any specific claim from token
+    }
+
+
+
+
+
 
     private Claims extractAllClaims(String token){
         return Jwts               //is a utility class provided by the JJWT library to handle JWT operations
